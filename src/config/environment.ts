@@ -32,7 +32,7 @@ const config = {
   },
 
   production: {
-    API_URL: "https://saas-estetica-automotiva.onrender.com/api",
+    API_URL: "https://saas-backend-8xdw.onrender.com",
     FRONTEND_URL: "https://saas-estetica-automotiva.vercel.app",
     STRIPE_PUBLISHABLE_KEY: VITE_STRIPE_PUBLISHABLE_KEY || "pk_live_...",
     BASE_DOMAIN: "saas-estetica-automotiva.vercel.app",
