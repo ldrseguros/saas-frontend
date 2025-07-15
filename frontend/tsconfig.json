@@ -1,0 +1,25 @@
+{
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" }
+  ],
+  "compilerOptions": {
+    "composite": true,
+    "noEmit": false,
+    "baseUrl": "./src",
+    "paths": {
+      "@/*": ["*"],
+      "@utils/*": ["utils/*"]
+    },
+    "noImplicitAny": false,
+    "noUnusedParameters": false,
+    "skipLibCheck": true,
+    "allowJs": true,
+    "noUnusedLocals": false,
+    "strictNullChecks": false,
+    "outDir": "./dist"
+  },
+  "include": ["src"],
+  "exclude": ["dist", "node_modules"]
+}
