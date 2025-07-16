@@ -11,6 +11,8 @@ import { Check, Star, Users, Zap } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
+import API from "@/utils/apiService";
+
 interface Plan {
   id: string;
   name: string;
@@ -29,10 +31,9 @@ const LandingPage = () => {
   useEffect(() => {
     const fetchPlans = async () => {
       try {
-        const response = await fetch("/api/public/plans");
-        if (response.ok) {
-          const data = await response.json();
-          setPlans(data);
+        const response = await API.get("/api/public/plans");
+        if (response.status === 200) {
+          setPlans(response.data);
         } else {
           console.error("Erro ao carregar planos");
           setPlans(examplePlans);

@@ -33,6 +33,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "sonner";
+import API from "@/utils/apiService";
 
 // Interface para os planos de assinatura
 interface Plan {
@@ -170,10 +171,9 @@ const Cadastro = () => {
   useEffect(() => {
     const fetchPlans = async () => {
       try {
-        const response = await fetch("/api/public/plans");
-        if (response.ok) {
-          const data = await response.json();
-          setPlans(data);
+        const response = await API.get("/api/public/plans");
+        if (response.status === 200) {
+          setPlans(response.data);
         } else {
           console.error("Erro ao carregar planos");
           // Planos de exemplo para desenvolvimento
