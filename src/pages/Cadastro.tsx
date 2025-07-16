@@ -168,46 +168,47 @@ const Cadastro = () => {
   }, [watchSubdomain]);
 
   // Carregar planos ao montar o componente
-  useEffect(() => {
-    const fetchPlans = async () => {
-      try {
-        const response = await API.get("/api/public/plans");
-        if (response.status === 200) {
-          setPlans(response.data);
-        } else {
-          console.error("Erro ao carregar planos");
-          // Planos de exemplo para desenvolvimento
-          setPlans([
-            {
-              id: "1",
-              name: "Básico",
-              description: "Ideal para estéticas pequenas",
-              price: 36.99,
-              billingCycle: "monthly",
-            },
-            {
-              id: "2",
-              name: "Profissional",
-              description: "Para estéticas em crescimento",
-              price: 46.99,
-              billingCycle: "monthly",
-            },
-            {
-              id: "3",
-              name: "Premium",
-              description: "Recursos avançados e suporte prioritário",
-              price: 56.99,
-              billingCycle: "monthly",
-            },
-          ]);
-        }
-      } catch (error) {
-        console.error("Erro ao buscar planos:", error);
+useEffect(() => {
+  console.log("Executando useEffect de fetchPlans...");
+  const fetchPlans = async () => {
+    try {
+      const response = await API.get("/api/public/plans");
+      console.log("Resposta da API de planos:", response);
+      if (response.status === 200 && response.data.length > 0) {
+        setPlans(response.data);
+      } else {
+        throw new Error("Nenhum plano encontrado");
       }
-    };
+    } catch (error) {
+      console.error("Erro ao buscar planos:", error);
+      setPlans([
+        {
+          id: "1",
+          name: "Básico",
+          description: "Ideal para estéticas pequenas",
+          price: 36.99,
+          billingCycle: "monthly",
+        },
+        {
+          id: "2",
+          name: "Profissional",
+          description: "Para estéticas em crescimento",
+          price: 46.99,
+          billingCycle: "monthly",
+        },
+        {
+          id: "3",
+          name: "Premium",
+          description: "Recursos avançados e suporte prioritário",
+          price: 56.99,
+          billingCycle: "monthly",
+        },
+      ]);
+    }
+  };
 
-    fetchPlans();
-  }, []);
+  fetchPlans();
+}, []);
 
   const onSubmit = async (data: CadastroFormValues) => {
     setIsLoading(true);
