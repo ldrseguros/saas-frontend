@@ -142,7 +142,7 @@ const Cadastro = () => {
     setCheckingSubdomain(true);
     try {
       const response = await API.get(`/api/public/check-subdomain/${subdomain}`);
-      const data = await response.data();
+      const data = response.data;
       setSubdomainAvailable(data.available);
     } catch (error) {
       console.error("Erro ao verificar subdomínio:", error);
@@ -214,30 +214,20 @@ const Cadastro = () => {
 
     try {
       // Enviar dados para API
-      const response = await API.post("/api/public/signup", {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        data: {
-          // Dados da empresa
-          name: data.name,
-          subdomain: data.subdomain,
-          contactEmail: data.contactEmail,
-          contactPhone: data.contactPhone,
-          address: data.address,
-          city: data.city,
-          state: data.state,
-          zipCode: data.zipCode,
-
-          // Dados do administrador
-          adminName: data.adminName,
-          adminEmail: data.adminEmail,
-          adminPassword: data.adminPassword,
-
-          // Plano escolhido
-          planId: data.planId,
-        },
-      });
+    const response = await API.post("/api/public/signup", {
+      name: data.name,
+      subdomain: data.subdomain,
+      contactEmail: data.contactEmail,
+      contactPhone: data.contactPhone,
+      address: data.address,
+      city: data.city,
+      state: data.state,
+      zipCode: data.zipCode,
+      adminName: data.adminName,
+      adminEmail: data.adminEmail,
+      adminPassword: data.adminPassword,
+      planId: data.planId,
+    });
 
       if (response.status === 200) {
         const result = response.data;
