@@ -215,27 +215,23 @@ useEffect(() => {
 
   try {
     const payload = {
-      tenant: {
-        name: data.name,
-        subdomain: data.subdomain,
-        contactEmail: data.contactEmail,
-        contactPhone: data.contactPhone,
-        address: data.address,
-        city: data.city,
-        state: data.state,
-        zipCode: data.zipCode,
-      },
-      admin: {
-        name: data.adminName,
-        email: data.adminEmail,
-        password: data.adminPassword,
-      },
+      name: data.name,
+      subdomain: data.subdomain,
+      contactEmail: data.contactEmail,
+      contactPhone: data.contactPhone,
+      address: data.address,
+      city: data.city,
+      state: data.state,
+      zipCode: data.zipCode,
+      adminName: data.adminName,
+      adminEmail: data.adminEmail,
+      adminPassword: data.adminPassword,
       planId: data.planId,
     };
 
     const response = await API.post("/api/public/signup", payload);
 
-    if (response.status === 200) {
+    if (response.status === 201) {
       const result = response.data;
       toast.success("Cadastro realizado com sucesso!");
 
@@ -258,7 +254,6 @@ useEffect(() => {
     setIsLoading(false);
   }
 };
-
   return (
     <div className="min-h-screen bg-gray-50 py-12">
       <div className="container mx-auto px-4">
