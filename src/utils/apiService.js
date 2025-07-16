@@ -128,8 +128,8 @@ API.interceptors.response.use(
 );
 
 // Funções para as chamadas de API
-export const registerUser = (userData) => API.post("/auth/register", userData);
-export const loginUser = (credentials) => API.post("/auth/login", credentials);
+export const registerUser = (userData) => API.post("/api/auth/register", userData);
+export const loginUser = (credentials) => API.post("/api/auth/login", credentials);
 export const fetchUsers = (params) => {
   console.log("Fetching users with params:", params);
   return API.get("/admin/users", { params });
