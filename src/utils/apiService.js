@@ -3,20 +3,27 @@ import { getSubdomainFromUrl } from './urlService';
 import { ENV_CONFIG } from '../config/environment';
 
 const getDynamicApiBaseUrl = () => {
+
+  if(ENV_CONFIG.IS_PRODUCTION){
+    console.log("DEBUG: Usando API_URL de produção do ENV_CONFIG:", ENV_CONFIG.API_URL);
+    return ENV_CONFIG.API_URL;
+  }
     const subdomain = getSubdomainFromUrl();
     const backendPort = ENV_CONFIG.BACKEND_PORT;
     const baseDomain = ENV_CONFIG.BASE_DOMAIN;
     const protocol = window.location.protocol;
 
     let apiUrl;
-    if (subdomain && subdomain !== 'www') {
+
+    if (subdomain && subdomain !== 'www' !== 'saas-estetica-automotiva') {
         apiUrl = `${protocol}//${subdomain}.${baseDomain}:${backendPort}/api`; 
+        console.log(`DEBUG: API Base URL gerada com subdomínio: ${apiUrl}`);
     } else {
         console.warn("Subdomínio não detectado na URL do navegador para API. Usando domínio base padrão.");
-        apiUrl = `${protocol}//localhost:${backendPort}/api`; 
+        apiUrl = ENV_CONFIG.API_URL;
+        console.log("DEBUG: API Base URL gerada (fallback):", apiUrl);
     }
 
-    console.log("DEBUG: API Base URL gerada:", apiUrl);
     return apiUrl;
 };
 
