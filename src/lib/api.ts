@@ -157,7 +157,7 @@ api.interceptors.response.use(
 // API para autenticação
 export const authAPI = {
   login: async (email: string, password: string) => {
-    const response = await api.post("/auth/login", { email, password });
+    const response = await api.post("/api/auth/login", { email, password });
     return response.data;
   },
 
@@ -173,7 +173,7 @@ export const authAPI = {
   },
 
   getProfile: async () => {
-    const response = await api.get("/auth/profile");
+    const response = await api.get("/api/auth/profile");
     return response.data;
   },
 };
@@ -181,27 +181,27 @@ export const authAPI = {
 // API para gerenciamento de tenants (apenas para superadmin)
 export const tenantAPI = {
   getAll: async (params = {}) => {
-    const response = await api.get("/superadmin/tenants", { params });
+    const response = await api.get("/api/superadmin/tenants", { params });
     return response.data;
   },
 
   getById: async (id: string) => {
-    const response = await api.get(`/superadmin/tenants/${id}`);
+    const response = await api.get(`/api/superadmin/tenants/${id}`);
     return response.data;
   },
 
   create: async (data: TenantData) => {
-    const response = await api.post("/superadmin/tenants", data);
+    const response = await api.post("/api/superadmin/tenants", data);
     return response.data;
   },
 
   update: async (id: string, data: Partial<TenantData>) => {
-    const response = await api.put(`/superadmin/tenants/${id}`, data);
+    const response = await api.put(`/api/superadmin/tenants/${id}`, data);
     return response.data;
   },
 
   getUsers: async (id: string) => {
-    const response = await api.get(`/superadmin/tenants/${id}/users`);
+    const response = await api.get(`/api/superadmin/tenants/${id}/users`);
     return response.data;
   },
 };
@@ -209,30 +209,30 @@ export const tenantAPI = {
 // API para gerenciamento de planos e assinaturas (apenas para superadmin)
 export const subscriptionAPI = {
   getPlans: async () => {
-    const response = await api.get("/superadmin/subscriptions/plans");
+    const response = await api.get("/api/superadmin/subscriptions/plans");
     return response.data;
   },
 
   getPlanById: async (id: string) => {
-    const response = await api.get(`/superadmin/subscriptions/plans/${id}`);
+    const response = await api.get(`/api/superadmin/subscriptions/plans/${id}`);
     return response.data;
   },
 
   createPlan: async (data: PlanData) => {
-    const response = await api.post("/superadmin/subscriptions/plans", data);
+    const response = await api.post("/api/superadmin/subscriptions/plans", data);
     return response.data;
   },
 
   updatePlan: async (id: string, data: Partial<PlanData>) => {
     const response = await api.put(
-      `/superadmin/subscriptions/plans/${id}`,
+      `/api/superadmin/subscriptions/plans/${id}`,
       data
     );
     return response.data;
   },
 
   getSubscriptions: async (params = {}) => {
-    const response = await api.get("/superadmin/subscriptions", { params });
+    const response = await api.get("/api/superadmin/subscriptions", { params });
     return response.data;
   },
 
@@ -241,14 +241,14 @@ export const subscriptionAPI = {
     data: { status: string; expirationDate?: string }
   ) => {
     const response = await api.patch(
-      `/superadmin/subscriptions/${tenantId}/status`,
+      `/api/superadmin/subscriptions/${tenantId}/status`,
       data
     );
     return response.data;
   },
 
   getPayments: async (params = {}) => {
-    const response = await api.get("/superadmin/subscriptions/payments", {
+    const response = await api.get("/api/superadmin/subscriptions/payments", {
       params,
     });
     return response.data;
@@ -286,39 +286,39 @@ export const paymentAPI = {
     successUrl: string;
     cancelUrl: string;
   }) => {
-    const response = await api.post("/payments/create-checkout-session", data);
+    const response = await api.post("/api/payments/create-checkout-session", data);
     return response.data;
   },
 
   getSubscriptionStatus: async () => {
-    const response = await api.get("/payments/subscription-status");
+    const response = await api.get("/api/payments/subscription-status");
     return response.data;
   },
 
   createCustomerPortal: async (returnUrl: string) => {
-    const response = await api.post("/payments/create-customer-portal", {
+    const response = await api.post("/api/payments/create-customer-portal", {
       returnUrl,
     });
     return response.data;
   },
 
   getPaymentHistory: async (params = {}) => {
-    const response = await api.get("/payments/history", { params });
+    const response = await api.get("/api/payments/history", { params });
     return response.data;
   },
 
   getPaymentStats: async () => {
-    const response = await api.get("/payments/stats");
+    const response = await api.get("/api/payments/stats");
     return response.data;
   },
 
   getLastPayment: async () => {
-    const response = await api.get("/payments/last");
+    const response = await api.get("/api/payments/last");
     return response.data;
   },
 
   getNextBillingDate: async () => {
-    const response = await api.get("/payments/next-billing");
+    const response = await api.get("/api/payments/next-billing");
     return response.data;
   },
 
@@ -330,12 +330,12 @@ export const paymentAPI = {
     transactionId?: string;
     nextBillingDate?: string;
   }) => {
-    const response = await api.post("/payments/record", data);
+    const response = await api.post("/api/payments/record", data);
     return response.data;
   },
 
   getPlanLimits: async () => {
-    const response = await api.get("/payments/plan-limits");
+    const response = await api.get("/api/payments/plan-limits");
     return response.data;
   },
 };
@@ -343,27 +343,27 @@ export const paymentAPI = {
 // API para serviços
 export const serviceAPI = {
   getAll: async () => {
-    const response = await api.get("/services");
+    const response = await api.get("/api/services");
     return response.data;
   },
 
   getById: async (id: string) => {
-    const response = await api.get(`/services/${id}`);
+    const response = await api.get(`/api/services/${id}`);
     return response.data;
   },
 
   create: async (data: ServiceData) => {
-    const response = await api.post("/services", data);
+    const response = await api.post("/api/services", data);
     return response.data;
   },
 
   update: async (id: string, data: Partial<ServiceData>) => {
-    const response = await api.put(`/services/${id}`, data);
+    const response = await api.put(`/api/services/${id}`, data);
     return response.data;
   },
 
   delete: async (id: string) => {
-    const response = await api.delete(`/services/${id}`);
+    const response = await api.delete(`/api/services/${id}`);
     return response.data;
   },
 };
@@ -371,32 +371,32 @@ export const serviceAPI = {
 // API para agendamentos
 export const bookingAPI = {
   getAll: async (params = {}) => {
-    const response = await api.get("/bookings", { params });
+    const response = await api.get("/api/bookings", { params });
     return response.data;
   },
 
   getById: async (id: string) => {
-    const response = await api.get(`/bookings/${id}`);
+    const response = await api.get(`/api/bookings/${id}`);
     return response.data;
   },
 
   create: async (data: BookingData) => {
-    const response = await api.post("/bookings", data);
+    const response = await api.post("/api/bookings", data);
     return response.data;
   },
 
   update: async (id: string, data: Partial<BookingData>) => {
-    const response = await api.put(`/bookings/${id}`, data);
+    const response = await api.put(`/api/bookings/${id}`, data);
     return response.data;
   },
 
   updateStatus: async (id: string, status: string) => {
-    const response = await api.patch(`/bookings/${id}/status`, { status });
+    const response = await api.patch(`/api/bookings/${id}/status`, { status });
     return response.data;
   },
 
   delete: async (id: string) => {
-    const response = await api.delete(`/bookings/${id}`);
+    const response = await api.delete(`/api/bookings/${id}`);
     return response.data;
   },
 };
