@@ -162,7 +162,7 @@ export const authAPI = {
   },
 
   signup: async (data: SignupData) => {
-    const response = await api.post("/public/signup", data);
+    const response = await api.post("/api/public/signup", data);
     return response.data;
   },
 
@@ -258,22 +258,22 @@ export const subscriptionAPI = {
 // API para as rotas públicas (acessíveis sem autenticação)
 export const publicAPI = {
   getPlans: async () => {
-    const response = await api.get("/public/plans");
+    const response = await api.get("/api/public/plans");
     return response.data;
   },
 
   getPlanById: async (id: string) => {
-    const response = await api.get(`/public/plans/${id}`);
+    const response = await api.get(`/api/public/plans/${id}`);
     return response.data;
   },
 
   checkSubdomain: async (subdomain: string) => {
-    const response = await api.get(`/public/check-subdomain/${subdomain}`);
+    const response = await api.get(`/api/public/check-subdomain/${subdomain}`);
     return response.data;
   },
 
   contact: async (data: ContactData) => {
-    const response = await api.post("/public/contact", data);
+    const response = await api.post("/api/public/contact", data);
     return response.data;
   },
 };
