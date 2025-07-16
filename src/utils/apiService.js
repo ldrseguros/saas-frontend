@@ -3,36 +3,43 @@ import { getSubdomainFromUrl } from './urlService';
 import { ENV_CONFIG } from '../config/environment';
 
 const getDynamicApiBaseUrl = () => {
+    // 1. Priorize SEMPRE a API_URL do ENV_CONFIG em produção.
+    // O Vercel define import.meta.env.PROD como true em builds de produção.
+    if (import.meta.env.PROD || process.env.NODE_ENV === 'production') {
+        console.log("DEBUG: Ambiente de produção detectado. Usando API_URL do ENV_CONFIG:", ENV_CONFIG.API_URL);
+        return ENV_CONFIG.API_URL;
+    }
 
-  if(ENV_CONFIG.IS_PRODUCTION){
-    console.log("DEBUG: Usando API_URL de produção do ENV_CONFIG:", ENV_CONFIG.API_URL);
-    return ENV_CONFIG.API_URL;
-  }
+    // 2. Se não estiver em produção, execute a lógica de subdomínio para desenvolvimento.
     const subdomain = getSubdomainFromUrl();
     const backendPort = ENV_CONFIG.BACKEND_PORT;
     const baseDomain = ENV_CONFIG.BASE_DOMAIN;
     const protocol = window.location.protocol;
 
     let apiUrl;
-
-    if (subdomain && subdomain !== 'www' !== 'saas-estetica-automotiva') {
-        apiUrl = `${protocol}//${subdomain}.${baseDomain}:${backendPort}/api`; 
-        console.log(`DEBUG: API Base URL gerada com subdomínio: ${apiUrl}`);
+    // Adicione o domínio do Vercel na exclusão para garantir que ele não seja tratado como subdomínio
+    // em ambientes de dev (se testar com URLs do Vercel localmente, o que é raro).
+    // Ou, se BASE_DOMAIN for 'vercel.app', trate de forma diferente.
+    if (subdomain && subdomain !== 'www' && !baseDomain.includes('vercel.app')) {
+        apiUrl = `${protocol}//${subdomain}.${baseDomain}:${backendPort}/api`;
+        console.log("DEBUG: API Base URL gerada com subdomínio (dev):", apiUrl);
     } else {
-        console.warn("Subdomínio não detectado na URL do navegador para API. Usando domínio base padrão.");
-        apiUrl = ENV_CONFIG.API_URL;
-        console.log("DEBUG: API Base URL gerada (fallback):", apiUrl);
+        // Fallback para desenvolvimento local sem subdomínio ou para domínios Vercel em dev.
+        console.warn("Subdomínio não detectado ou inválido para desenvolvimento. Usando API_URL padrão ou localhost.");
+        // Em desenvolvimento, você pode querer que ele use localhost ou uma API de desenvolvimento
+        // Se a API_URL do ENV_CONFIG aponta para o backend do Render, use-a também aqui como fallback para dev
+        apiUrl = ENV_CONFIG.API_URL || `${protocol}//localhost:${backendPort}/api`; // Fallback mais seguro
+        console.log("DEBUG: API Base URL gerada (fallback dev):", apiUrl);
     }
-
     return apiUrl;
 };
 
 const API = axios.create({
-  baseURL: getDynamicApiBaseUrl(),
-  withCredentials: true,
-  headers: {
-    'Content-Type': 'application/json',
-  }
+  baseURL: getDynamicApiBaseUrl(),
+  withCredentials: true,
+  headers: {
+    'Content-Type': 'application/json',
+  }
 });
 
 

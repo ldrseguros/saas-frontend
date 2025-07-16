@@ -20,14 +20,13 @@ interface EnvConfig {
 // NOVO: Defina a URL da API para usar a variável de ambiente do Vite
 // O Vite automaticamente injeta variáveis de ambiente que começam com VITE_
 export const ENV_CONFIG: EnvConfig = {
-    // A API_URL será lida de uma variável de ambiente do Vercel/Vite
-    // Esta variável PRECISA ser configurada no painel do Vercel
-    API_URL: import.meta.env.VITE_API_URL || 'http://localhost:3000', // Valor padrão para desenvolvimento local caso não encontre a env
-    FRONTEND_URL: import.meta.env.VITE_FRONTEND_URL || "http://localhost:8080", // Também de variável de ambiente, se desejar
-    STRIPE_PUBLISHABLE_KEY: VITE_STRIPE_PUBLISHABLE_KEY || "pk_test_...", // Mantém a lógica existente ou simplifique
-    BASE_DOMAIN: import.meta.env.VITE_BASE_DOMAIN || 'meusaas.com.br', // Ler de variável de ambiente
-    BACKEND_PORT: parseInt(import.meta.env.VITE_BACKEND_PORT || '3000', 10), // Ler de variável de ambiente
-    ENVIRONMENT: import.meta.env.MODE || 'development', // Usa o modo do Vite
+
+    API_URL: import.meta.env.VITE_API_URL || 'http://localhost:3000', 
+    FRONTEND_URL: import.meta.env.VITE_FRONTEND_URL || "http://localhost:8080", 
+    STRIPE_PUBLISHABLE_KEY: VITE_STRIPE_PUBLISHABLE_KEY || "pk_test_...", 
+    BASE_DOMAIN: import.meta.env.VITE_BASE_DOMAIN || 'meusaas.com.br', 
+    BACKEND_PORT: parseInt(import.meta.env.VITE_BACKEND_PORT || '3000', 10), 
+    ENVIRONMENT: import.meta.env.MODE || 'development', 
     IS_DEVELOPMENT: import.meta.env.DEV,
     IS_PRODUCTION: import.meta.env.PROD,
 };
