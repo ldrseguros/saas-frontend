@@ -210,51 +210,54 @@ useEffect(() => {
   fetchPlans();
 }, []);
 
-  const onSubmit = async (data: CadastroFormValues) => {
-    setIsLoading(true);
+ const onSubmit = async (data: CadastroFormValues) => {
+  setIsLoading(true);
 
-    try {
-      // Enviar dados para API
-    const response = await API.post("/api/public/signup", {
-      name: data.name,
-      subdomain: data.subdomain,
-      contactEmail: data.contactEmail,
-      contactPhone: data.contactPhone,
-      address: data.address,
-      city: data.city,
-      state: data.state,
-      zipCode: data.zipCode,
-      adminName: data.adminName,
-      adminEmail: data.adminEmail,
-      adminPassword: data.adminPassword,
+  try {
+    const payload = {
+      tenant: {
+        name: data.name,
+        subdomain: data.subdomain,
+        contactEmail: data.contactEmail,
+        contactPhone: data.contactPhone,
+        address: data.address,
+        city: data.city,
+        state: data.state,
+        zipCode: data.zipCode,
+      },
+      admin: {
+        name: data.adminName,
+        email: data.adminEmail,
+        password: data.adminPassword,
+      },
       planId: data.planId,
-    });
+    };
 
-      if (response.status === 200) {
-        const result = response.data;
+    const response = await API.post("/api/public/signup", payload);
 
-        toast.success("Cadastro realizado com sucesso!");
+    if (response.status === 200) {
+      const result = response.data;
+      toast.success("Cadastro realizado com sucesso!");
 
-        // Redirecionar para a página de pagamento ou dashboard
-        if (result.requiresPayment) {
-          navigate(`/checkout?session=${result.sessionId}`);
-        } else {
-          // Período de trial, redirecionar para o dashboard
-          navigate(`/login?email=${data.adminEmail}&registered=true`);
-        }
+      if (result.requiresPayment) {
+        navigate(`/checkout?session=${result.sessionId}`);
       } else {
-        const error = response.data;
-        toast.error(error.message || "Erro ao criar conta");
+        navigate(`/login?email=${data.adminEmail}&registered=true`);
       }
-    } catch (error) {
-      console.error("Erro ao cadastrar:", error);
-      toast.error(
-        "Ocorreu um erro ao processar seu cadastro. Tente novamente."
-      );
-    } finally {
-      setIsLoading(false);
+    } else {
+      toast.error(response.data.message || "Erro ao criar conta");
     }
-  };
+  } catch (error: any) {
+    if (error.response?.data?.message) {
+      toast.error(error.response.data.message);
+    } else {
+      toast.error("Erro inesperado ao cadastrar");
+    }
+    console.error("Erro detalhado:", error.response?.data || error);
+  } finally {
+    setIsLoading(false);
+  }
+};
 
   return (
     <div className="min-h-screen bg-gray-50 py-12">
