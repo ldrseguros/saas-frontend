@@ -141,8 +141,8 @@ const Cadastro = () => {
 
     setCheckingSubdomain(true);
     try {
-      const response = await fetch(`/api/public/check-subdomain/${subdomain}`);
-      const data = await response.json();
+      const response = await API.get(`/api/public/check-subdomain/${subdomain}`);
+      const data = await response.data();
       setSubdomainAvailable(data.available);
     } catch (error) {
       console.error("Erro ao verificar subdomínio:", error);
@@ -214,12 +214,11 @@ const Cadastro = () => {
 
     try {
       // Enviar dados para API
-      const response = await fetch("/api/public/signup", {
-        method: "POST",
+      const response = await API.post("/api/public/signup", {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
+        data: {
           // Dados da empresa
           name: data.name,
           subdomain: data.subdomain,
@@ -237,11 +236,11 @@ const Cadastro = () => {
 
           // Plano escolhido
           planId: data.planId,
-        }),
+        },
       });
 
-      if (response.ok) {
-        const result = await response.json();
+      if (response.status === 200) {
+        const result = response.data;
 
         toast.success("Cadastro realizado com sucesso!");
 
@@ -253,7 +252,7 @@ const Cadastro = () => {
           navigate(`/login?email=${data.adminEmail}&registered=true`);
         }
       } else {
-        const error = await response.json();
+        const error = response.data;
         toast.error(error.message || "Erro ao criar conta");
       }
     } catch (error) {
