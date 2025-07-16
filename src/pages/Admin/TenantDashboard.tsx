@@ -120,13 +120,13 @@ const TenantDashboard = () => {
         }
 
         // Buscar estatísticas do dashboard
-        const statsResponse = await API.get("/admin/dashboard/stats");
+        const statsResponse = await API.get("admin/dashboard/stats");
         const stats = statsResponse.data;
 
         // Buscar agendamentos recentes (próximos)
         const now = new Date();
         const fromDate = now.toISOString().split("T")[0];
-        const bookingResponse = await API.get("/bookings/admin",{
+        const bookingResponse = await API.get("bookings/admin",{
           params:{
             limit: 5,
             fromDate: fromDate
@@ -177,7 +177,7 @@ const TenantDashboard = () => {
           .slice(0, 5); // Mostrar apenas os próximos 5
 
         // Buscar total de clientes
-        const clientsResponse = await API.get("/admin/users");
+        const clientsResponse = await API.get("admin/users");
         const allUsersResponse = clientsResponse.data;
 
         const totalClients = (allUsersResponse.users || []).filter(
@@ -185,7 +185,7 @@ const TenantDashboard = () => {
         ).length;
 
         // Buscar total de serviços
-        const servicesResponse = await API.get("/services/admin");
+        const servicesResponse = await API.get("services/admin");
         const allServices = servicesResponse.data;
 
         const totalServices = allServices.length;
@@ -200,7 +200,7 @@ const TenantDashboard = () => {
         };
 
         try {
-          const financialResponse = await API.get("/admin/financial/summary");
+          const financialResponse = await API.get("admin/financial/summary");
 
           financial = financialResponse.data;
         } catch (financialError) {
